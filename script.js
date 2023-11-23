@@ -1,9 +1,11 @@
 let firstCard = 11
-let secondCard = 12
+let secondCard = 2
 let sum = firstCard + secondCard
 let hasBlackJack = false
 isAlive = true
 message = ""
+
+let messageEl = document.getElementById("message-el")
 
 function startGame() {
     if (sum <= 20) {
@@ -18,5 +20,5 @@ function startGame() {
         message = "You're out of the game! 😭"
         isAlive = false
     }
-    console.log(message)
+    messageEl.innerHTML = message
 }
