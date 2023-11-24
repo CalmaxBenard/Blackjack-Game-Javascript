@@ -1,12 +1,13 @@
 let cards = []
 let computerCards = []
+let firstCard = 0
+let secondCard = 0
 let sumComputer = 0
-let firstCompCard = getRandomCard()
+let firstCompCard = 0
 let sumPlayer = 0
 let hasBlackJack = false
 let isAlive = false
 let message = ""
-
 
 // Get html elements to modify
 let messageEl = document.querySelector("#message-el")
@@ -14,17 +15,17 @@ let sumEl = document.querySelector("#sum-el")
 let cardsEl = document.querySelector("#cards-el")
 let playerEl = document.querySelector("#player-el")
 let compCardsEl = document.querySelector("#compcards-el")
-let compSumEl = document.querySelector("#compsum-el")
 
 let player = {
     name: "Carlmax",
-    chips: 145
+    chips: prize()
 }
-playerEl.innerHTML = player.name + ": $" + player.chips
+
 
 function startGame() {
-    let firstCard = getRandomCard()
-    let secondCard = getRandomCard()
+    firstCard = getRandomCard()
+    secondCard = getRandomCard()
+    firstCompCard = getRandomCard()
 
     cards = [firstCard, secondCard]
 
@@ -78,13 +79,64 @@ function feedback() {
     }
     
     else if (sumPlayer === 21) {
-        message = "You've got Blackjack!"
+        message = "You win with a Blackjack!"
+        playerEl.innerHTML = "Congratulations! " + "You win" + ": $" + player.chips
         hasBlackJack = true
     }
     else {
-        message = "You're out of the game!"
+        message = "You're out of the game! Computer wins."
         isAlive = false
     }
     messageEl.innerHTML = message
     return message
+}
+
+
+function endGame() {
+    if (isAlive === false) {
+        resetGame()
+    }
+    else{
+        let secondCompCard = getRandomCard()
+        let sumComp = firstCompCard + secondCompCard
+        if (sumComp === 21) {
+            message = "Computer wins with a Blackjack"
+        }
+        while (sumPlayer > sumComp && sumPlayer < 21){
+            let CompCard = getRandomCard()
+            sumComp += CompCard
+            if (sumComp === 21) {
+                message = "Computer wins with a Blackjack"
+            }
+            else if (sumComp > sumPlayer && sumComp < 21 && sumPlayer < 21){
+                message = "Computer wins with a total of: " + sumComp
+            }
+            else if (sumComp === sumPlayer) {
+                message = "The game ends in a draw!"
+            }
+        
+            else {
+                message = "You win the game! Computer total was: " + sumComp 
+                playerEl.innerHTML = "Congratulations! " + "You win" + ": $" + player.chips
+            }
+        }
+        
+        
+        messageEl.innerHTML = message
+    }
+    
+}
+
+function resetGame() {
+    isAlive = false
+    sumEl.innerHTML = "Sum: " 
+    compCardsEl.innerHTML = "" 
+    cardsEl.innerHTML = "Cards: " 
+    messageEl.innerHTML = "Want to play a round?"
+    playerEl.innerHTML = ""
+}
+
+function prize(){
+    let trophy = Math.floor(Math.random() * 300) + 100
+    return trophy
 }
