@@ -1,5 +1,8 @@
 let cards = []
-let sum = 0
+let computerCards = []
+let sumComputer = 0
+let firstCompCard = getRandomCard()
+let sumPlayer = 0
 let hasBlackJack = false
 let isAlive = false
 let message = ""
@@ -10,6 +13,8 @@ let messageEl = document.querySelector("#message-el")
 let sumEl = document.querySelector("#sum-el")
 let cardsEl = document.querySelector("#cards-el")
 let playerEl = document.querySelector("#player-el")
+let compCardsEl = document.querySelector("#compcards-el")
+let compSumEl = document.querySelector("#compsum-el")
 
 let player = {
     name: "Carlmax",
@@ -20,38 +25,35 @@ playerEl.innerHTML = player.name + ": $" + player.chips
 function startGame() {
     let firstCard = getRandomCard()
     let secondCard = getRandomCard()
+
     cards = [firstCard, secondCard]
-    sum = firstCard + secondCard
+
+    sumPlayer = firstCard + secondCard
+
     isAlive = true
     renderGame()
 }
 
 function renderGame() {
-    cardsEl.innerHTML = "Cards: " 
-    
+    // Displaying computer first card
+    compCardsEl.innerHTML = "First Computer Card: "
+    compCardsEl.innerHTML += firstCompCard
+   
+    // Displaying player cards
+    cardsEl.innerHTML = "Your Cards: " 
     for (let i = 0; i < cards.length; i++){
         cardsEl.innerHTML += cards[i] + " "
     }
-    sumEl.innerHTML = "Sum: " + sum
-    if (sum <= 20) {
-        message = "Do you want to draw another card?"
-    }
+    sumEl.innerHTML = "Sum: " + sumPlayer
     
-    else if (sum === 21) {
-        message = "You've got Blackjack!"
-        hasBlackJack = true
-    }
-    else {
-        message = "You're out of the game!"
-        isAlive = false
-    }
-    messageEl.innerHTML = message
+    // Display message to user
+    feedback()
 }
 
 function newCard() {
     if (isAlive && hasBlackJack === false) {
         let card = getRandomCard()
-        sum += card
+        sumPlayer += card
         cards.push(card)
         renderGame()
     }    
@@ -68,4 +70,21 @@ function getRandomCard() {
     else {
         return randomNum
     }           
+}
+
+function feedback() {
+    if (sumPlayer <= 20) {
+        message = "Do you want to draw another card?"
+    }
+    
+    else if (sumPlayer === 21) {
+        message = "You've got Blackjack!"
+        hasBlackJack = true
+    }
+    else {
+        message = "You're out of the game!"
+        isAlive = false
+    }
+    messageEl.innerHTML = message
+    return message
 }
