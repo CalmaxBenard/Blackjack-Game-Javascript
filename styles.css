@@ -29,3 +29,7 @@ button {
     margin-bottom: 5px;
     margin-top: 5px;
 }
+hr {
+    width:10%;
+    margin:0 auto
+}
